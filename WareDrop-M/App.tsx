@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>MobilApp fálj helye</Text>
       <StatusBar style="auto" />
     </View>
   );
