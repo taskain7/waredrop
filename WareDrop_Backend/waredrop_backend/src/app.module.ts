@@ -8,4 +8,3 @@ import {PrismaModule} from "./database/prisma.module";
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
