@@ -4,5 +4,5 @@ Content-Type: application/json
 
 {
   "user_email": "teszt.elek@teszt.hu",
-  "user_password": "titkos123"
+  "user_password": "titkos"
 }
