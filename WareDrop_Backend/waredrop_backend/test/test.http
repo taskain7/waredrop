@@ -1,8 +1,2 @@
 ###
-GET http://localhost:3001/login
-Content-Type: application/json
-
-{
-  "user_email": "teszt.elek@teszt.hu",
-  "user_password": "titkos"
-}
+GET http://localhost:3001/login/teszt.elek@teszt.hu

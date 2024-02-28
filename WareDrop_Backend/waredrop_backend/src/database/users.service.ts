@@ -42,12 +42,12 @@ export class UsersService {
         });
     }
 
-    async loginUser(user: Prisma.usersWhereUniqueInput) {
+    async loginUser(email: string, password: string,) {
         const result = await this.db.users.findFirst({
-            where: user,
+            where: {AND:[ {user_email: email}, {user_password: password} ]}
         })
         if(result === undefined || result === null){
-            throw new NotFoundException('No such user')
+            throw new NotFoundException('Email and password pair not found, or is incorrect!')
         }
         return result;
     }
