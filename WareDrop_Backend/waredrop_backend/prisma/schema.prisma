@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model items {
+  item_id       Int            @id(map: "items_pk") @default(autoincrement())
+  item_name     String         @unique(map: "item_name_uk") @db.VarChar(30)
+  item_quantity Int
+  transactions  transactions[]
+}
+
+model permissions {
+  permission_id       Int                   @id(map: "permissons_pk") @default(autoincrement())
+  permission_name     String                @unique(map: "permission_name_uk") @db.VarChar(30)
+  role_has_permission role_has_permission[]
+}
+
+model role_has_permission {
+  permisson_permission_id Int
+  role_role_id            Int
+  permissions             permissions @relation(fields: [permisson_permission_id], references: [permission_id], onDelete: NoAction, onUpdate: NoAction, map: "relation_7_permisson_fk")
+  roles                   roles       @relation(fields: [role_role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction, map: "relation_7_role_fk")
+
+  @@id([permisson_permission_id, role_role_id], map: "relation_7_pk")
+}
+
+model roles {
+  role_id             Int                   @id(map: "roles_pk") @default(autoincrement())
+  role_name           String                @unique(map: "role_name_uk") @db.VarChar(30)
+  role_has_permission role_has_permission[]
+  user_has_role       user_has_role[]
+}
+
+model transactions {
+  trans_id               Int        @id(map: "transactions_pk") @default(autoincrement())
+  trans_post_date        DateTime   @db.Date
+  trans_arrived_date     DateTime?  @db.Date
+  trans_origin           String?    @db.VarChar(30)
+  trans_target           String     @db.VarChar(30)
+  warehouse_warehouse_id Int
+  item_item_id           Int
+  items                  items      @relation(fields: [item_item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction, map: "transaction_item_fk")
+  warehouses             warehouses @relation(fields: [warehouse_warehouse_id], references: [warehouse_id], onDelete: NoAction, onUpdate: NoAction, map: "transaction_warehouse_fk")
+}
+
+model user_assigned_to_warehouse {
+  user_user_id           Int
+  warehouse_warehouse_id Int
+  users                  users      @relation(fields: [user_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "relation_5_user_fk")
+  warehouses             warehouses @relation(fields: [warehouse_warehouse_id], references: [warehouse_id], onDelete: NoAction, onUpdate: NoAction, map: "relation_5_warehouse_fk")
+
+  @@id([user_user_id, warehouse_warehouse_id], map: "relation_5_pk")
+}
+
+model user_has_role {
+  role_role_id Int
+  user_user_id Int
+  roles        roles @relation(fields: [role_role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction, map: "relation_6_role_fk")
+  users        users @relation(fields: [user_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "relation_6_user_fk")
+
+  @@id([role_role_id, user_user_id], map: "relation_6_pk")
+}
+
+model users {
+  user_id                    Int                          @id(map: "users_pk") @default(autoincrement())
+  user_name                  String                       @unique(map: "user_name_uk") @db.VarChar(30)
+  user_email                 String                       @unique(map: "user_email_uk") @db.VarChar(50)
+  user_password              String                       @unique(map: "user_password_uk") @db.VarChar(34)
+  user_assigned_to_warehouse user_assigned_to_warehouse[]
+  user_has_role              user_has_role[]
+}
+
+model warehouses {
+  warehouse_id               Int                          @id(map: "warehouses_pk")
+  warehouse_name             String                       @unique(map: "warehouse_name_uk") @db.VarChar(30)
+  location                   String                       @db.VarChar(30)
+  transactions               transactions[]
+  user_assigned_to_warehouse user_assigned_to_warehouse[]
+}
