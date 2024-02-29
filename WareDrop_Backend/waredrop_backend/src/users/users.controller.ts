@@ -16,6 +16,6 @@ export class UsersController {
 
     @Post('user/role')
     async userRole(@Body() user: Prisma.usersWhereUniqueInput) {
-        return this.users.getUserLore(user);
+        return this.users.getUserRole(user);
     }
 }

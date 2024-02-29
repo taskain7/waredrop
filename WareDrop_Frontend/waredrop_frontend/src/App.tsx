@@ -1,35 +1,22 @@
-import TestButton from "./dbteszt";
 import axios from "axios";
+import {useState} from "react";
 
-function App() {
-    async function getElek(){
-        const emailInput = (document.getElementById('emailInput') as HTMLInputElement).value
-        const passwordInput = (document.getElementById('passwordInput') as HTMLInputElement).value
+const App: React.FC = () =>{
+    const [emailInput, setEmailInput] = useState<string>('');
+    const [passwordInput, setPasswordInput] = useState<string>('');
 
-        console.log(emailInput, passwordInput)
-
-        const user = {
-            user_email: emailInput,
-            user_password: passwordInput
-        }
-
-        let response;
-        axios.post(`http://localhost:3001/login`, {user})
-            .then(res => {
-                response = res;
-            })
-
-        console.log(response)
-        return 'teszt';
-    }
-  return (
-      <div className="app">
-          <input type="text" id={"emailInput"}/>
-          <input type="password" id={"passwordInput"}/>
-
-          <TestButton handleClick={getElek}></TestButton>
-      </div>
-  );
+    return (
+        <div className="app">
+            <input type="text" value={emailInput} onChange={(e) => {
+                const email = e.target.value;
+                setEmailInput(email);
+            }}/>
+            <input type="password" value={passwordInput} onChange={(e) => {
+                const password = e.target.value;
+                setPasswordInput(password);
+            }}/>
+        </div>
+    );
 }
 
 export default App;

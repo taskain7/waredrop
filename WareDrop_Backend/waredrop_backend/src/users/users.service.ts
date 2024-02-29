@@ -16,9 +16,8 @@ export class UsersService {
         }
         return result;
     }
-
-    async getUserLore(user: Prisma.usersWhereUniqueInput) {
-        const role = await this.db.user_has_role.findFirst({
+    async getUserRole(user: Prisma.usersWhereUniqueInput) {
+        const role = await this.db.user_has_role.findMany({
             select: {
                 roles: {
                     select: {
