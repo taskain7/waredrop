@@ -1,4 +1,5 @@
 import TestButton from "./dbteszt";
+import axios from "axios";
 
 function App() {
     async function getElek(){
@@ -7,14 +8,18 @@ function App() {
 
         console.log(emailInput, passwordInput)
 
-        const user = await fetch(`http://localhost:3001/login?email=${emailInput}&password=${passwordInput}`,{
-            method: 'GET',
-        }).then((response) => response.json())
-            .then((user) => {
-                return user;
-            });
+        const user = {
+            user_email: emailInput,
+            user_password: passwordInput
+        }
 
-        console.log(user)
+        let response;
+        axios.post(`http://localhost:3001/login`, {user})
+            .then(res => {
+                response = res;
+            })
+
+        console.log(response)
         return 'teszt';
     }
   return (
